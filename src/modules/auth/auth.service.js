@@ -8,6 +8,7 @@ import { sendOTPMail } from "#shared/services/sendOTPMail.js";
 import cloudinary from "#config/cloudinary.config.js";
 import generateOtp from "#shared/utils/generateOtp.util.js";
 import generateToken from "#shared/services/generateToken.util.js";
+import { sendEmail } from "#shared/services/email.service.js";
 
 export const registerService = async ({
   firstName,
@@ -37,17 +38,98 @@ export const registerService = async ({
     password: hashedPassword,
   });
 
-  //Generating TOKEN
-  // const token = jwt.sign({ id: newUser._id }, process.env.SECRET_KEY, {
-  //   expiresIn: "10m",
-  // });
-
   const token = generateToken({ id: newUser._id, expiry: "10m" });
 
   if (!token) throw new CustomError("Token is missing");
 
   //Send the verification Email
+
+  //Google Email- SMTP
   await verifyEmail(token, newUser.email);
+
+  // //Resend Email
+  // const html = `
+  //     <!DOCTYPE html>
+  //     <html>
+  //     <head>
+  //       <meta charset="UTF-8" />
+  //       <style>
+  //         body {
+  //           font-family: Arial, sans-serif;
+  //           background-color: #f4f6f8;
+  //           margin: 0;
+  //           padding: 0;
+  //         }
+  //         .container {
+  //           max-width: 500px;
+  //           margin: 10px auto;
+  //           background: #ffffff;
+  //           padding: 30px;
+  //           border-radius: 10px;
+  //           box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  //           text-align: center;
+  //         }
+  //         .logo {
+  //           font-size: 22px;
+  //           font-weight: bold;
+  //           color: #4f46e5;
+  //           margin-bottom: 20px;
+  //         }
+  //         h2 {
+  //           color: #333;
+  //         }
+  //         p {
+  //           color: #555;
+  //           line-height: 1.6;
+  //           font-size: 15px;
+  //         }
+  //         .btn {
+  //           display: inline-block;
+  //           margin-top: 20px;
+  //           padding: 12px 20px;
+  //           background-color: #4f46e5;
+  //           color: #ffffff !important;
+  //           text-decoration: none;
+  //           border-radius: 6px;
+  //           font-weight: bold;
+  //         }
+  //         .footer {
+  //           margin-top: 25px;
+  //           font-size: 12px;
+  //           color: #999;
+  //         }
+  //       </style>
+  //     </head>
+  //     <body>
+  //       <div class="container">
+  //         <div class="logo">
+  //           WELCOME TO ${process.env.APP_NAME}! 🚀
+  //         </div>
+
+  //         <h2>Please Verify Your Email</h2>
+
+  //         <p>
+  //           Hi there 👋,<br /><br />
+  //           Thanks for signing up! Please confirm your email address by
+  //           clicking the button below.
+  //         </p>
+
+  //         <a href="${process.env.CLIENT_URL}/verify/${token}" class="btn">
+  //           Verify Email
+  //         </a>
+
+  //         <p class="footer">
+  //           If you didn’t request this, you can safely ignore this email.
+  //         </p>
+  //       </div>
+  //     </body>
+  //     </html>
+  //     `;
+  // await sendEmail({
+  //   to: newUser.email,
+  //   subject: "Verify your Email",
+  //   html: html,
+  // });
 
   //We pass token to the new user
   newUser.token = token;
