@@ -3,7 +3,7 @@ import "dotenv/config";
 
 const connectDB = async () => {
   try {
-    await mongoose.connect(`${process.env.MONGO_URI}/aiobackend`);
+    await mongoose.connect(`${process.env.MONGO_URI}/retailkartneo`);
     console.log("MongoDB connected successfully");
   } catch (error) {
     console.log("MongoDB connection failed:", error);
