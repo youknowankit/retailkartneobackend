@@ -15,7 +15,7 @@ export const addProductService = async ({ userId, files, productData }) => {
       //passing each file to URI for uploading
       const fileUri = getDataUri(file);
       const result = await cloudinary.uploader.upload(fileUri, {
-        folder: "retailkartneo", //cloudinary folder name
+        folder: "retailkartneo/productImages", //cloudinary folder name
       });
 
       productImg.push({
@@ -119,7 +119,7 @@ export const updateProductService = async ({
     for (let file of files) {
       const fileUri = getDataUri(file);
       const result = await cloudinary.uploader.upload(fileUri, {
-        folder: "retailkartneo",
+        folder: "retailkartneo/productImages",
       });
       updatedImages.push({
         url: result.secure_url,
