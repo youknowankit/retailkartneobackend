@@ -42,10 +42,10 @@ export const addProductService = async ({ userId, files, productData }) => {
 export const getAllProductsService = async () => {
   const products = await Product.find();
   //Instead of using !products better to use products.length
-  if (products.length === 0) {
-    throw new CustomError("No Products available", 404);
-    // return (products = []);
-  }
+  // if (products.length === 0) {
+  //   throw new CustomError("No Products available", 404);
+  //   // return (products = []);
+  // }
   return products;
 };
 
