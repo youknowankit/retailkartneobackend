@@ -64,7 +64,7 @@ export const updateUserService = async ({
 
     const uploadResult = await new Promise((resolve, reject) => {
       const stream = cloudinary.uploader.upload_stream(
-        { folder: "profiles" },
+        { folder: "retailkartneo/profilepics" },
         (error, result) => {
           if (error) reject(error);
           else resolve(result);
